@@ -45,7 +45,6 @@ public class Controller {
                     game.putTile(pos);
                     break;
                 case TURN_END:
-                    view.displayGame();
                     game.nextPlayer();
                     break;
                 case GAME_OVER:
