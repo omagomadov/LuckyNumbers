@@ -50,7 +50,7 @@ public class Game implements Model {
             throw new IllegalStateException("State is not PICK_TILE");
         }
         this.state = State.PLACE_TILE;
-        this.pickedTile = new Tile((int) (Math.random() * ((20 - 1) + 1)) + 1);
+        this.pickedTile = randomTile();
         return this.pickedTile;
     }
 
@@ -59,9 +59,9 @@ public class Game implements Model {
         if (this.state != State.PLACE_TILE) {
             throw new IllegalStateException("State is not PLACE_TILE");
         }
-        this.state = State.TURN_END;
         if (this.canTileBePut(pos) && this.isInside(pos)) {
             this.boards[this.currentPlayerNumber].put(this.pickedTile, pos);
+            this.state = State.TURN_END;
             if (this.boards[this.currentPlayerNumber].isFull()) {
                 this.state = State.GAME_OVER;
             }
@@ -78,15 +78,15 @@ public class Game implements Model {
             throw new IllegalStateException("State is not TURN_END");
         }
         this.state = State.PICK_TILE;
-        if ((this.currentPlayerNumber + 1) > this.playerCount - 1) {
-            this.currentPlayerNumber = 0;
-        } else {
-            this.currentPlayerNumber++;
-        }
+        this.currentPlayerNumber = (this.currentPlayerNumber + 1)
+                % this.playerCount;
     }
 
     @Override
     public int getPlayerCount() {
+        if (this.state == state.NOT_STARTED) {
+            throw new IllegalStateException("State is NOT_STARTED");
+        }
         return this.playerCount;
     }
 
@@ -97,11 +97,18 @@ public class Game implements Model {
 
     @Override
     public int getCurrentPlayerNumber() {
+        if (this.state == state.NOT_STARTED
+                || this.state == state.GAME_OVER) {
+            throw new IllegalStateException("State is NOT_STARTED or GAME_OVER");
+        }
         return this.currentPlayerNumber;
     }
 
     @Override
     public Tile getPickedTile() {
+        if (this.state != state.PLACE_TILE) {
+            throw new IllegalStateException("State is not PLACE_TILE");
+        }
         return this.pickedTile;
     }
 
@@ -112,22 +119,34 @@ public class Game implements Model {
 
     @Override
     public boolean canTileBePut(Position pos) {
-        return this.boards[this.currentPlayerNumber].canBePut(this.pickedTile, pos);
+        if (this.state != state.PLACE_TILE) {
+            throw new IllegalStateException("State is not PLACE_TILE");
+        } else if (!this.isInside(pos)) {
+            throw new IllegalArgumentException("The position is outside the board");
+        } else {
+            return this.boards[this.currentPlayerNumber].canBePut(this.pickedTile, pos);
+        }
     }
 
     @Override
     public Tile getTile(int playerNumber, Position pos) {
+        if (this.state == state.NOT_STARTED) {
+            throw new IllegalStateException("State is NOT_STARTED");
+        } else if (!this.isInside(pos) || (playerNumber >= this.playerCount
+                || playerNumber < 0)) {
+            throw new IllegalArgumentException("the position is outside "
+                    + " the board or the playerNumber is outside of range");
+        }
         return this.boards[playerNumber].getTile(pos);
     }
 
     @Override
     public int getWinner() {
-        int player = 0;
-        while (player < this.playerCount - 1) {
-            if (this.boards[player].isFull()) {
-                return player;
-            }
-            player++;
+        if (this.state != State.GAME_OVER) {
+            throw new IllegalStateException("State is not GAME_OVER");
+        }
+        if (this.boards[this.currentPlayerNumber].isFull()) {
+            return this.currentPlayerNumber;
         }
         return -1;
     }
@@ -143,6 +162,15 @@ public class Game implements Model {
         this.state = State.PLACE_TILE;
         this.pickedTile = new Tile(value);
         return this.pickedTile;
+    }
+
+    /**
+     * Give a random Tile between 1 and 20.
+     *
+     * @return a tile
+     */
+    private Tile randomTile() {
+        return new Tile((int) (Math.random() * ((20 - 1) + 1)) + 1);
     }
 
 }

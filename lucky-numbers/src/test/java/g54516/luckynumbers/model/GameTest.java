@@ -106,6 +106,8 @@ public class GameTest {
     }
 
     /* === À vous de compléter... === */
+    
+    /* === Testing method canTileBePut() === */
     @Test
     public void can_tile_be_put_false() {
         game.start(2);
@@ -124,6 +126,7 @@ public class GameTest {
         assertTrue(game.canTileBePut(new Position(0, 1)));
     }
 
+    /* === Testing method isInside() === */
     @Test
     public void position_is_inside_true() {
         game.start(2);
@@ -136,12 +139,14 @@ public class GameTest {
         assertFalse(game.isInside(new Position(-1, 3)));
     }
 
+    /* === Testing method getWinner() === */
     @Test
     public void player_is_winner() {
         fullPlay();
         assertEquals(0, game.getWinner());
     }
 
+    /* === Testing method getPickedTile() === */
     @Test
     public void pick_tile_4_true() {
         game.start(2);
@@ -149,6 +154,7 @@ public class GameTest {
         assertEquals(4, game.getPickedTile().getValue());
     }
 
+    /* === Testing method putTile and getTile() === */
     @Test
     public void get_tile_from_board_0() {
         game.start(2);
@@ -157,6 +163,7 @@ public class GameTest {
         assertEquals(2, game.getTile(0, new Position(0, 0)).getValue());
     }
 
+    /* === Testing method nextPlayer() === */
     @Test
     public void next_player() {
         game.start(2);
@@ -180,4 +187,33 @@ public class GameTest {
         game.nextPlayer();
         assertEquals(0, game.getCurrentPlayerNumber());
     }
+
+    /* === Testing method getState() === */
+    @Test
+    public void get_state_PICK_TILE() {
+        game.start(2);
+        assertEquals(State.PICK_TILE, game.getState());
+    }
+
+    @Test
+    public void get_state_PLACE_TILE() {
+        game.start(2);
+        game.pickTile();
+        assertEquals(State.PLACE_TILE, game.getState());
+    }
+
+    @Test
+    public void get_state_TURN_END() {
+        game.start(2);
+        game.pickTile();
+        game.putTile(new Position(0, 0));
+        assertEquals(State.TURN_END, game.getState());
+    }
+
+    @Test
+    public void get_state_GAME_OVER() {
+        fullPlay();
+        assertEquals(State.GAME_OVER, game.getState());
+    }
+    
 }
