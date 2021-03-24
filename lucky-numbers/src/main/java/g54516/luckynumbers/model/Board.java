@@ -92,15 +92,12 @@ public class Board {
      * higher than those on the left and up on the board
      */
     private boolean tileCanBePut(Tile tile, Position pos) {
-        if (isTileLowerDown(tile, pos) && isTileLowerRight(tile, pos)) {
-            if (!isTileHigherUp(tile, pos) || !isTileHigherLeft(tile, pos)) {
-                return false;
-            }
+        if (isTileLowerDown(tile, pos) && isTileLowerRight(tile, pos)
+                && isTileHigherUp(tile, pos) && isTileHigherLeft(tile, pos)) {
+            return true;
         } else {
             return false;
         }
-
-        return true;
     }
 
     /**
