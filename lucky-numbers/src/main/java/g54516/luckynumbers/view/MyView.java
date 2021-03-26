@@ -68,15 +68,17 @@ public class MyView implements View {
         int row, column;
         Position position;
 
+        // Asks player a row and column
         System.out.println("Row : ");
         row = kbd.nextInt();
         System.out.println("Column : ");
         column = kbd.nextInt();
+
+        // Asks player row and column while is not correct
         while (!model.isInside(new Position(row, column))
                 || !model.canTileBePut(new Position(row, column))) {
-            System.out.println("Incorrect position or position"
-                    + " not allowed by the rule");
-            System.out.println("please retry !");
+            this.displayError("Incorrect position or position "
+                    + " not allowed by the rules");
             System.out.println("Row : ");
             row = kbd.nextInt();
             System.out.println("Column : ");
@@ -84,6 +86,7 @@ public class MyView implements View {
         }
         System.out.println("");
 
+        // Create a Position with the given row and column
         position = new Position(row, column);
         return position;
     }
@@ -101,7 +104,7 @@ public class MyView implements View {
 
         // Displays the horizontal bar on the top of the board
         displayHorizontal_barTop();
-        
+
         // Displays the board and the vertical bar
         for (int row = 0; row < model.getBoardSize(); row++) {
             System.out.print(count + "|");
@@ -117,7 +120,7 @@ public class MyView implements View {
             count++;
             System.out.println("");
         }
-        
+
         // Displays the horizontal bar on the down of the board
         displayHorizontal_barDown();
     }
