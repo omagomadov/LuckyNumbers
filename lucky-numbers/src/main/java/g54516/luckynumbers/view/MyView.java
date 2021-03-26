@@ -97,18 +97,49 @@ public class MyView implements View {
      * Displays the board of each players.
      */
     private void displayBoard() {
+        int count = 0;
+
+        displayHorizontal_barTop();
         for (int row = 0; row < model.getBoardSize(); row++) {
+            System.out.print(count + "|");
             for (int column = 0; column < model.getBoardSize(); column++) {
                 if (model.getTile(model.getCurrentPlayerNumber(), new Position(row, column))
                         == null) {
-                    System.out.printf("%4s", "." + " ");
+                    System.out.printf("%4s", ".");
                 } else {
                     System.out.printf("%4s", model.getTile(model.getCurrentPlayerNumber(),
                             new Position(row, column)).getValue());
                 }
             }
+            count++;
             System.out.println("");
         }
+        displayHorizontal_barDown();
+    }
+
+    /**
+     * Display horizontal bar on the top of the board.
+     */
+    private void displayHorizontal_barTop() {
+        System.out.print("  ");
+        for (int i = 0; i < model.getBoardSize(); i++) {
+            System.out.printf("%4s", i);
+        }
+        System.out.println("");
+        for (int i = 0; i < model.getBoardSize() * 4 + 4; i++) {
+            System.out.print("=");
+        }
+        System.out.println("");
+    }
+
+    /**
+     * Display horizontal bar on the down of the board.
+     */
+    private void displayHorizontal_barDown() {
+        for (int i = 0; i < model.getBoardSize() * 4 + 4; i++) {
+            System.out.print("=");
+        }
+        System.out.println("");
     }
 
 }
