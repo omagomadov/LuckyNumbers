@@ -97,9 +97,12 @@ public class MyView implements View {
      * Displays the board of each players.
      */
     private void displayBoard() {
-        int count = 0;
+        int count = 1;
 
+        // Displays the horizontal bar on the top of the board
         displayHorizontal_barTop();
+        
+        // Displays the board and the vertical bar
         for (int row = 0; row < model.getBoardSize(); row++) {
             System.out.print(count + "|");
             for (int column = 0; column < model.getBoardSize(); column++) {
@@ -114,6 +117,8 @@ public class MyView implements View {
             count++;
             System.out.println("");
         }
+        
+        // Displays the horizontal bar on the down of the board
         displayHorizontal_barDown();
     }
 
@@ -122,7 +127,7 @@ public class MyView implements View {
      */
     private void displayHorizontal_barTop() {
         System.out.print("  ");
-        for (int i = 0; i < model.getBoardSize(); i++) {
+        for (int i = 1; i <= model.getBoardSize(); i++) {
             System.out.printf("%4s", i);
         }
         System.out.println("");
