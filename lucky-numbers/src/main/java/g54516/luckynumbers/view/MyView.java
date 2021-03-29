@@ -70,18 +70,18 @@ public class MyView implements View {
 
         // Asks player a row and column
         System.out.println("Row : ");
-        row = kbd.nextInt();
+        row = kbd.nextInt() - 1;
         System.out.println("Column : ");
-        column = kbd.nextInt();
+        column = kbd.nextInt() - 1;
 
         // Asks player row and column while is not correct
         while (!model.isInside(new Position(row, column))) {
             System.out.println("");
             this.displayError("Position outside the board\n");
             System.out.println("Row : ");
-            row = kbd.nextInt();
+            row = kbd.nextInt() - 1;
             System.out.println("Column : ");
-            column = kbd.nextInt();
+            column = kbd.nextInt() - 1;
         }
         System.out.println("");
 
