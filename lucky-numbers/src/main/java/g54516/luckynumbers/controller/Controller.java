@@ -42,6 +42,10 @@ public class Controller {
                 case PLACE_TILE:
                     view.displayGame();
                     Position pos = view.askPosition();
+                    while (!game.canTileBePut(pos)) {
+                        view.displayError("Cannot put a tile on that position\n");
+                        pos = view.askPosition();
+                    }
                     game.putTile(pos);
                     break;
                 case TURN_END:

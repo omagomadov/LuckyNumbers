@@ -53,8 +53,8 @@ public class MyView implements View {
         System.out.println("How many players participate in the game : ");
         numberOfPlayers = kbd.nextInt();
         while (numberOfPlayers < 2 || numberOfPlayers > 4) {
-            System.out.println("the number of players is not between 2 and 4 "
-                    + "(both included) !\n");
+            this.displayError("the number of players is not between 2 and 4 "
+                    + "(both included)\n");
             System.out.println("How many players participate in the game : ");
             numberOfPlayers = kbd.nextInt();
         }
@@ -75,10 +75,9 @@ public class MyView implements View {
         column = kbd.nextInt();
 
         // Asks player row and column while is not correct
-        while (!model.isInside(new Position(row, column))
-                || !model.canTileBePut(new Position(row, column))) {
-            this.displayError("Incorrect position or position "
-                    + " not allowed by the rules");
+        while (!model.isInside(new Position(row, column))) {
+            System.out.println("");
+            this.displayError("Position outside the board\n");
             System.out.println("Row : ");
             row = kbd.nextInt();
             System.out.println("Column : ");
