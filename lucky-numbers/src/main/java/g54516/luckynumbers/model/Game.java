@@ -145,10 +145,7 @@ public class Game implements Model {
         if (this.state != State.GAME_OVER) {
             throw new IllegalStateException("State is not GAME_OVER");
         }
-        if (this.boards[this.currentPlayerNumber].isFull()) {
-            return this.currentPlayerNumber;
-        }
-        return -1;
+        return this.currentPlayerNumber;
     }
 
     /**
