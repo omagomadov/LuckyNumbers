@@ -3,6 +3,7 @@ package g54516.luckynumbers.controller;
 import g54516.luckynumbers.model.Model;
 import g54516.luckynumbers.model.Position;
 import g54516.luckynumbers.view.View;
+import java.util.Scanner;
 
 /**
  * Controller of the game.
@@ -29,7 +30,9 @@ public class Controller {
      * Method who start the game.
      */
     public void play() {
+        Scanner kbd = new Scanner(System.in);
         view.displayWelcome();
+        String endGame = "";
         while (true) {
             switch (game.getState()) {
                 case NOT_STARTED:
@@ -53,9 +56,16 @@ public class Controller {
                     break;
                 case GAME_OVER:
                     view.displayWinner();
-                    playerCount = view.askPlayerCount();
-                    game.start(playerCount);
+                    System.out.println("Do want (r)estart or (q)uit the game?");
+                    endGame = kbd.next();
+                    if (endGame.contains("r")) {
+                        playerCount = view.askPlayerCount();
+                        game.start(playerCount);
+                    }
                     break;
+            }
+            if (endGame.contains("q")) {
+                break;
             }
         }
     }
