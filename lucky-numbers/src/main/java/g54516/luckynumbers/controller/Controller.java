@@ -56,7 +56,7 @@ public class Controller {
                     break;
                 case GAME_OVER:
                     view.displayWinner();
-                    System.out.println("Do want (r)estart or (q)uit the game?");
+                    System.out.println("Do you want (r)estart or (q)uit the game?");
                     endGame = kbd.next();
                     if (endGame.contains("r")) {
                         playerCount = view.askPlayerCount();
