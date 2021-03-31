@@ -65,6 +65,7 @@ public class Controller {
                     break;
             }
             if (endGame.contains("q")) {
+                System.out.println("Goodbye ! :-) ");
                 break;
             }
         }
