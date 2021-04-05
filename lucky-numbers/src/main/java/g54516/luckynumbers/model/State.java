@@ -26,5 +26,9 @@ public enum State {
     /**
      * Represents that a player has completed his board.
      */
-    GAME_OVER;
+    GAME_OVER,
+    /**
+     * Represents that a player have the choice to place or drop a tile.
+     */
+    PLACE_OR_DROP_TILE;
 }
