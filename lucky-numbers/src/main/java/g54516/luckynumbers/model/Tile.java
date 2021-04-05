@@ -8,6 +8,7 @@ package g54516.luckynumbers.model;
 public class Tile {
 
     private int value;
+    private boolean faceUp;
 
     /**
      * Constructor who initialize attributes of the class Tile.
@@ -25,6 +26,22 @@ public class Tile {
      */
     public int getValue() {
         return value;
+    }
+
+    /**
+     * Getter method of the class Tile.
+     *
+     * @return the face of the tile
+     */
+    public boolean isFaceUp() {
+        return faceUp;
+    }
+
+    /**
+     * Turn the attribute faceUp to true.
+     */
+    void flipFaceUp() {
+        this.faceUp = true;
     }
 
 }
