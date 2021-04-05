@@ -1,5 +1,7 @@
 package g54516.luckynumbers.model;
 
+import java.util.List;
+
 /**
  * Interface for the Game model.
  *
@@ -35,15 +37,6 @@ public interface Model {
     int getBoardSize();
 
     /**
-     * The current player pick a tile. In this version of the game, a random one
-     * is created. State becomes PLACE_TILE.
-     *
-     * @return the picked tile
-     * @throws IllegalStateException if called when state is not PICK_TILE
-     */
-    Tile pickTile();
-
-    /**
      * Put a tile at the given position. Put the previously picked tile of the
      * current player at the given position on its board. State becomes
      * TURN_END.
@@ -52,7 +45,8 @@ public interface Model {
      * @throws IllegalArgumentException if the tile can't be put on that
      * position (position outside of the board or position not allowed by the
      * rules)
-     * @throws IllegalStateException if called when state is not PUT_TILE
+     * @throws IllegalStateException if called when state is not PLACE_TILE or
+     * PLACE_OR_DROP_TILE
      */
     void putTile(Position pos);
 
@@ -112,7 +106,8 @@ public interface Model {
      * @param pos the position to check
      * @return true if the picked tile can be put at that position.
      * @throws IllegalArgumentException if the position is outside the board.
-     * @throws IllegalStateException if state is not PLACE_TILE.
+     * @throws IllegalStateException if state is not PLACE_TILE or
+     * PLACE_OR_DROP_TILE
      */
     boolean canTileBePut(Position pos);
 
@@ -136,5 +131,54 @@ public interface Model {
      * @throws IllegalStateException if game state is not GAME_OVER
      */
     int getWinner();
+
+    /**
+     * Picks a face down tile randomly. State become PLACE_OR_DROP_TILE.
+     *
+     * @return a tile
+     * @throws IllegalStateException if the state is not PICK_TILE
+     */
+    Tile pickFaceDownTile();
+
+    /**
+     * Picks a face up tile given in parameter from the deck. State become
+     * PLACE_TILE.
+     *
+     * @param tile a tile
+     * @throws IllegalArgumentException if tile doesn't exist
+     * @throws IllegalStateException if the state is not PICK_TILE
+     */
+    void pickFaceUpTile(Tile tile);
+
+    /**
+     * Drops the chosen tile face up in the deck. State become TURN_END.
+     *
+     * @throws IllegalStateException if the state is not PLACE_OR_DROP_TILE
+     */
+    void dropTile();
+
+    /**
+     * Gives the number of face down tiles in the deck.
+     *
+     * @return number of face down tiles
+     * @throws IllegalStateException if the state is NOT_STARTED
+     */
+    int faceDownTileCount();
+
+    /**
+     * Gives the number of face up tiles in the deck.
+     *
+     * @return number of face up tiles
+     * @throws IllegalStateException if the state is NOT_STARTED
+     */
+    int faceUpTileCount();
+
+    /**
+     * Gives the list of face up tiles in the deck.
+     *
+     * @return list of face up tiles
+     * @throws IllegalStateException if the state is NOT_STARTED
+     */
+    List<Tile> getAllfaceUpTiles();
 
 }

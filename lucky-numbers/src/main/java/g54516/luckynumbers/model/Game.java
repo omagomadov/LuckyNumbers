@@ -1,5 +1,7 @@
 package g54516.luckynumbers.model;
 
+import java.util.List;
+
 /**
  * Class Game for implements the Model.
  *
@@ -12,6 +14,7 @@ public class Game implements Model {
     private Board[] boards;
     private Tile pickedTile;
     private State state;
+    private Deck deck;
 
     /**
      * Constructor who initialize attribute state of the class Game.
@@ -37,6 +40,7 @@ public class Game implements Model {
         this.playerCount = playerCount;
         this.currentPlayerNumber = 0;
         this.state = State.PICK_TILE;
+        this.deck = new Deck(playerCount);
     }
 
     @Override
@@ -45,25 +49,31 @@ public class Game implements Model {
     }
 
     @Override
-    public Tile pickTile() {
-        if (this.state != State.PICK_TILE) {
-            throw new IllegalStateException("State is not PICK_TILE");
-        }
-        this.state = State.PLACE_TILE;
-        this.pickedTile = randomTile();
-        return this.pickedTile;
-    }
-
-    @Override
     public void putTile(Position pos) {
-        if (this.state != State.PLACE_TILE) {
-            throw new IllegalStateException("State is not PLACE_TILE");
+        if (this.state != State.PLACE_TILE
+                && this.state != State.PLACE_OR_DROP_TILE) {
+            throw new IllegalStateException("State is not PLACE_TILE "
+                    + " or PLACE_OR_DROP_TILE");
         }
+        // Verify if the position respect the rules
         if (this.canTileBePut(pos) && this.isInside(pos)) {
-            this.boards[this.currentPlayerNumber].put(this.pickedTile, pos);
-            this.state = State.TURN_END;
-            if (this.boards[this.currentPlayerNumber].isFull()) {
-                this.state = State.GAME_OVER;
+            // Verify if there is a tile at this position
+            if (this.boards[this.currentPlayerNumber].getTile(pos) != null) {
+                this.state = State.TURN_END;
+                deck.putBack(this.boards[this.currentPlayerNumber].getTile(pos));
+                this.boards[this.currentPlayerNumber].put(this.pickedTile, pos);
+                // Verify if the player completed his board
+                if (this.boards[this.currentPlayerNumber].isFull()) {
+                    this.state = State.GAME_OVER;
+                }
+            } else {
+                // Put a tile at this position because there is no tile
+                this.state = State.TURN_END;
+                this.boards[this.currentPlayerNumber].put(this.pickedTile, pos);
+                // Verify if the player completed his board
+                if (this.boards[this.currentPlayerNumber].isFull()) {
+                    this.state = State.GAME_OVER;
+                }
             }
         } else {
             throw new IllegalArgumentException("the tile can't be put on that "
@@ -119,8 +129,10 @@ public class Game implements Model {
 
     @Override
     public boolean canTileBePut(Position pos) {
-        if (this.state != state.PLACE_TILE) {
-            throw new IllegalStateException("State is not PLACE_TILE");
+        if (this.state != State.PLACE_TILE
+                && this.state != State.PLACE_OR_DROP_TILE) {
+            throw new IllegalStateException("State is not PLACE_TILE "
+                    + " or PLACE_OR_DROP_TILE");
         } else if (!this.isInside(pos)) {
             throw new IllegalArgumentException("The position is outside the board");
         } else {
@@ -148,6 +160,63 @@ public class Game implements Model {
         return this.currentPlayerNumber;
     }
 
+    @Override
+    public Tile pickFaceDownTile() {
+        if (this.state != State.PICK_TILE) {
+            throw new IllegalStateException("State is not PICK_TILE");
+        }
+        this.pickedTile = deck.pickFaceDown();
+        this.state = State.PLACE_OR_DROP_TILE;
+        return this.pickedTile;
+    }
+
+    @Override
+    public void pickFaceUpTile(Tile tile) {
+        if (this.state != State.PICK_TILE) {
+            throw new IllegalStateException("State is not PICK_TILE");
+        }
+        if (deck.hasFaceUp(tile)) {
+            this.state = State.PLACE_TILE;
+            this.deck.pickFaceUp(tile);
+            this.pickedTile = tile;
+        } else {
+            throw new IllegalArgumentException("Tile doesn't exist");
+        }
+    }
+
+    @Override
+    public void dropTile() {
+        if (this.state != State.PLACE_OR_DROP_TILE) {
+            throw new IllegalStateException("State is not PLACE_OR_DROP_TILE");
+        }
+        this.state = State.TURN_END;
+        this.deck.putBack(this.pickedTile);
+    }
+
+    @Override
+    public int faceDownTileCount() {
+        if (this.state == State.NOT_STARTED) {
+            throw new IllegalStateException("State is NOT_STARTED");
+        }
+        return this.deck.faceDownCount();
+    }
+
+    @Override
+    public int faceUpTileCount() {
+        if (this.state == State.NOT_STARTED) {
+            throw new IllegalStateException("State is NOT_STARTED");
+        }
+        return this.deck.faceUpCount();
+    }
+
+    @Override
+    public List<Tile> getAllfaceUpTiles() {
+        if (this.state == State.NOT_STARTED) {
+            throw new IllegalStateException("State is NOT_STARTED");
+        }
+        return this.deck.getAllFaceUp();
+    }
+
     /**
      * Pick a tile with the given value. Should be used only for the JUnit
      * tests.
@@ -159,15 +228,6 @@ public class Game implements Model {
         this.state = State.PLACE_TILE;
         this.pickedTile = new Tile(value);
         return this.pickedTile;
-    }
-
-    /**
-     * Give a random Tile between 1 and 20.
-     *
-     * @return a tile
-     */
-    private Tile randomTile() {
-        return new Tile((int) (Math.random() * ((20 - 1) + 1)) + 1);
     }
 
 }

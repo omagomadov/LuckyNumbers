@@ -199,11 +199,6 @@ public class GameTest {
         assertEquals(tile, game.getPickedTile());
     }
 
-    @Test
-    public void pick_tile_state_not_PLACE_TILE() {
-        assertThrows(IllegalStateException.class,
-                () -> game.pickTile());
-    }
 
     /* === Testing method putTile and getTile() === */
     @Test
@@ -223,7 +218,7 @@ public class GameTest {
     @Test
     public void put_tile_on_board_out_of_bound_negative_row() {
         game.start(2);
-        game.pickTile();
+        game.pickFaceDownTile();
         assertThrows(IllegalArgumentException.class,
                 () -> game.putTile(new Position(-1, 0)));
     }
@@ -231,7 +226,7 @@ public class GameTest {
     @Test
     public void put_tile_on_board_out_of_bound_negative_column() {
         game.start(2);
-        game.pickTile();
+        game.pickFaceDownTile();
         assertThrows(IllegalArgumentException.class,
                 () -> game.putTile(new Position(0, -1)));
     }
@@ -239,7 +234,7 @@ public class GameTest {
     @Test
     public void put_tile_on_board_out_of_bound_negative_both() {
         game.start(2);
-        game.pickTile();
+        game.pickFaceDownTile();
         assertThrows(IllegalArgumentException.class,
                 () -> game.putTile(new Position(-1, -5)));
     }
@@ -247,7 +242,7 @@ public class GameTest {
     @Test
     public void put_tile_on_board_out_of_bound_positive_row() {
         game.start(2);
-        game.pickTile();
+        game.pickFaceDownTile();
         assertThrows(IllegalArgumentException.class,
                 () -> game.putTile(new Position(5, 0)));
     }
@@ -255,7 +250,7 @@ public class GameTest {
     @Test
     public void put_tile_on_board_out_of_bound_positive_column() {
         game.start(2);
-        game.pickTile();
+        game.pickFaceDownTile();
         assertThrows(IllegalArgumentException.class,
                 () -> game.putTile(new Position(0, 5)));
     }
@@ -263,7 +258,7 @@ public class GameTest {
     @Test
     public void put_tile_on_board_out_of_bound_positive_both() {
         game.start(2);
-        game.pickTile();
+        game.pickFaceDownTile();
         assertThrows(IllegalArgumentException.class,
                 () -> game.putTile(new Position(5, 5)));
     }
@@ -279,7 +274,7 @@ public class GameTest {
     @Test
     public void next_player() {
         game.start(2);
-        game.pickTile();
+        game.pickFaceDownTile();
         game.putTile(new Position(0, 0));
         game.nextPlayer();
         assertEquals(1, game.getCurrentPlayerNumber());
@@ -289,11 +284,11 @@ public class GameTest {
     public void next_player_0() {
         game.start(2);
         // player 0
-        game.pickTile();
+        game.pickFaceDownTile();
         game.putTile(new Position(0, 0));
         // player 1
         game.nextPlayer();
-        game.pickTile();
+        game.pickFaceDownTile();
         game.putTile(new Position(0, 0));
         // player 0
         game.nextPlayer();
@@ -321,16 +316,16 @@ public class GameTest {
     }
 
     @Test
-    public void get_state_PLACE_TILE() {
+    public void get_state_PLACE_OR_DROP_TILE() {
         game.start(2);
-        game.pickTile();
-        assertEquals(State.PLACE_TILE, game.getState());
+        game.pickFaceDownTile();
+        assertEquals(State.PLACE_OR_DROP_TILE, game.getState());
     }
 
     @Test
     public void get_state_TURN_END() {
         game.start(2);
-        game.pickTile();
+        game.pickFaceDownTile();
         game.putTile(new Position(0, 0));
         assertEquals(State.TURN_END, game.getState());
     }
@@ -352,6 +347,80 @@ public class GameTest {
     public void get_player_count_2_players() {
         game.start(2);
         assertEquals(2, game.getPlayerCount());
+    }
+
+    /* === Testing method pickFaceDownTile() === */
+    @Test
+    public void pick_face_down_tile_not_PICK_TILE() {
+        assertThrows(IllegalStateException.class,
+                () -> game.pickFaceDownTile());
+    }
+
+    /* === Testing method pickFaceUpTile() === */
+    @Test
+    public void pick_face_up_tile_not_PICK_TILE() {
+        assertThrows(IllegalStateException.class,
+                () -> game.pickFaceUpTile(new Tile(1)));
+    }
+
+    /* === Testing method dropTile() === */
+    @Test
+    public void drop_tile_not_PLACE_OR_DROP_TILE() {
+        assertThrows(IllegalStateException.class,
+                () -> game.dropTile());
+    }
+
+    /* === Testing method faceDownTileCount() === */
+    @Test
+    public void face_down_tile_count_NOT_STARTED() {
+        assertThrows(IllegalStateException.class,
+                () -> game.faceDownTileCount());
+    }
+
+    @Test
+    public void face_down_tile_count_40() {
+        game.start(2);
+        assertEquals(40, game.faceDownTileCount());
+    }
+
+    @Test
+    public void face_down_tile_count_39() {
+        game.start(2);
+        game.pickFaceDownTile();
+        game.putTile(new Position(0, 0));
+        game.nextPlayer();
+        assertEquals(39, game.faceDownTileCount());
+    }
+
+    @Test
+    public void face_down_tile_count_drop_39() {
+        game.start(2);
+        game.pickFaceDownTile();
+        game.dropTile();
+        game.nextPlayer();
+        assertEquals(39, game.faceDownTileCount());
+    }
+
+    /* === Testing method faceUpTileCount() === */
+    @Test
+    public void face_up_tile_count_NOT_STARTED() {
+        assertThrows(IllegalStateException.class,
+                () -> game.faceUpTileCount());
+    }
+
+    @Test
+    public void face_up_tile_count_1() {
+        game.start(2);
+        game.pickFaceDownTile();
+        game.dropTile();
+        assertEquals(1, game.faceUpTileCount());
+    }
+
+    /* === Testing method getAllfaceUpTiles()() === */
+    @Test
+    public void all_face_up_tile_NOT_STARTED() {
+        assertThrows(IllegalStateException.class,
+                () -> game.getAllfaceUpTiles());
     }
 
 }

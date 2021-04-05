@@ -44,7 +44,10 @@ public class Deck {
      * @return a hidden tile
      */
     public Tile pickFaceDown() {
-        return this.faceDownTiles.get(randomTile());
+        int random = randomTile();
+        Tile tile = this.faceDownTiles.get(random);
+        this.faceDownTiles.remove(random);
+        return tile;
     }
 
     /**
@@ -99,7 +102,7 @@ public class Deck {
      * @return a random number
      */
     private int randomTile() {
-        return (int) (Math.random() * (this.faceDownCount() - 0) + 1) + 0;
+        return (int) (Math.random() * ((this.faceDownCount() - 1) - 0) + 1) + 0;
     }
 
     /**
