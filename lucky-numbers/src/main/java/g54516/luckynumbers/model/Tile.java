@@ -37,6 +37,35 @@ public class Tile {
         return faceUp;
     }
 
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 29 * hash + this.value;
+        hash = 29 * hash + (this.faceUp ? 1 : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Tile other = (Tile) obj;
+        if (this.value != other.value) {
+            return false;
+        }
+        if (this.faceUp != other.faceUp) {
+            return false;
+        }
+        return true;
+    }
+
     /**
      * Turn the attribute faceUp to true.
      */
