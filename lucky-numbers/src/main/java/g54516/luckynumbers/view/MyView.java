@@ -101,18 +101,21 @@ public class MyView implements View {
         Scanner kbd = new Scanner(System.in);
         String choice = "";
 
+        System.out.println("Current player :" + model.getCurrentPlayerNumber());
         // Asks player which action he want to do
         System.out.println("Which action do you want to do : "
                 + "pick face (d)own tile or pick face (u)p tile ?");
         choice = kbd.nextLine();
 
-        // Asks while the action is wrong
-        while (!(choice.contains("d")) && !(choice.contains("u"))) {
-            System.out.println("Wrong action !");
+        // Asks while the action is wrong or no tiles on the deck
+        while (!(choice.contains("d")) && (!(choice.contains("u"))
+                || model.faceUpTileCount() == 0)) {
+            this.displayError("Wrong action or no face up tiles on the deck");
             System.out.println("Which action do you want to do : "
                     + "pick face (d)own tile or pick face (u)p tile ?");
             choice = kbd.nextLine();
         }
+        System.out.println("");
 
         return choice;
     }
@@ -128,25 +131,56 @@ public class MyView implements View {
 
         // Asks player while this tile doesn't exist
         while (!(model.getAllfaceUpTiles().contains(new Tile(choice)))) {
-            System.out.println("Tile doesn't exist !");
+            this.displayError("Tile doesn't exist !");
             System.out.println("Which face up tile do you want to pick ?");
             choice = kbd.nextInt();
         }
+        System.out.println("");
 
         return choice;
     }
 
     @Override
     public void displayDeck() {
+        System.out.println("####################################");
         // Displays remaining face down tiles
         System.out.println("Remaining face down tiles : "
                 + model.faceDownTileCount());
 
-        // Displays face up tiles on the deck
+        // Displays face up tiles on the deck or "no tiles" message
         System.out.println("Current face up tiles on the deck :");
-        for (Tile tile : model.getAllfaceUpTiles()) {
-            System.out.println(tile.getValue() + " ");
+        if (model.getAllfaceUpTiles().size() == 0) {
+            System.out.println("no tiles");
+        } else {
+            for (Tile tile : model.getAllfaceUpTiles()) {
+                System.out.print(tile.getValue() + " ");
+            }
+            System.out.println("");
         }
+        System.out.println("####################################");
+        System.out.println("");
+    }
+
+    @Override
+    public String askDropOrPut() {
+        Scanner kbd = new Scanner(System.in);
+        String choice = "";
+
+        // Asks player if he want to drop or put a tile
+        System.out.println("Which action do you want to do : "
+                + "(d)rop the tile or (p)ut the tile ?");
+        choice = kbd.nextLine();
+
+        // Asks player while the action is wrong
+        while (!(choice.contains("d")) && !(choice.contains("p"))) {
+            this.displayError("Wrong action !");
+            System.out.println("Which action do you want to do : "
+                    + "(d)rop the tile or (p)ut the tile ?");
+            choice = kbd.nextLine();
+        }
+        System.out.println("");
+
+        return choice;
     }
 
     /**

@@ -2,6 +2,7 @@ package g54516.luckynumbers.controller;
 
 import g54516.luckynumbers.model.Model;
 import g54516.luckynumbers.model.Position;
+import g54516.luckynumbers.model.Tile;
 import g54516.luckynumbers.view.View;
 import java.util.Scanner;
 
@@ -40,7 +41,22 @@ public class Controller {
                     game.start(playerCount);
                     break;
                 case PICK_TILE:
-                    game.pickTile();
+                    String choice = view.askAction();
+                    view.displayDeck();
+                    if (choice.contains("u")) {
+                        game.pickFaceUpTile(new Tile(view.askWhichFaceUpTile()));
+                    } else {
+                        game.pickFaceDownTile();
+                    }
+                    break;
+                case PLACE_OR_DROP_TILE:
+                    view.displayGame();
+                    String dropOrPut = view.askDropOrPut();
+                    if (dropOrPut.contains("d")) {
+                        game.dropTile();
+                    } else {
+                        game.putTile(view.askPosition());
+                    }
                     break;
                 case PLACE_TILE:
                     view.displayGame();

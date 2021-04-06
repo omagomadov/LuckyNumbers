@@ -62,6 +62,17 @@ public interface View {
     public String askAction();
 
     /**
+     * Asks player if he want to drop or put a tile.
+     * <ul>
+     * <li>Asks if the player want to drop a tile</li>
+     * <li>Asks if the player want to put a tile</li>
+     * </ul>
+     *
+     * @return the action of the player
+     */
+    public String askDropOrPut();
+
+    /**
      * Asks player which face up tile he want to pick.
      *
      * @return the value of the tile

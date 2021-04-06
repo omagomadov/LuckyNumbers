@@ -116,8 +116,10 @@ public class Game implements Model {
 
     @Override
     public Tile getPickedTile() {
-        if (this.state != state.PLACE_TILE) {
-            throw new IllegalStateException("State is not PLACE_TILE");
+        if (this.state != state.PLACE_TILE
+                && this.state != state.PLACE_OR_DROP_TILE) {
+            throw new IllegalStateException("State is not PLACE_TILE or"
+                    + " PLACE_OR_DROp_TILE");
         }
         return this.pickedTile;
     }
