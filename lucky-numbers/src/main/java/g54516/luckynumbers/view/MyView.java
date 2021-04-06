@@ -2,6 +2,7 @@ package g54516.luckynumbers.view;
 
 import g54516.luckynumbers.model.Model;
 import g54516.luckynumbers.model.Position;
+import g54516.luckynumbers.model.Tile;
 import java.util.Scanner;
 
 /**
@@ -93,6 +94,59 @@ public class MyView implements View {
     @Override
     public void displayError(String message) {
         System.out.println("Error : " + message);
+    }
+
+    @Override
+    public String askAction() {
+        Scanner kbd = new Scanner(System.in);
+        String choice = "";
+
+        // Asks player which action he want to do
+        System.out.println("Which action do you want to do : "
+                + "pick face (d)own tile or pick face (u)p tile ?");
+        choice = kbd.nextLine();
+
+        // Asks while the action is wrong
+        while (!(choice.contains("d")) && !(choice.contains("u"))) {
+            System.out.println("Wrong action !");
+            System.out.println("Which action do you want to do : "
+                    + "pick face (d)own tile or pick face (u)p tile ?");
+            choice = kbd.nextLine();
+        }
+
+        return choice;
+    }
+
+    @Override
+    public int askWhichFaceUpTile() {
+        Scanner kbd = new Scanner(System.in);
+        int choice;
+
+        // Asks player which face up tile he want to pick
+        System.out.println("Which face up tile do you want to pick ?");
+        choice = kbd.nextInt();
+
+        // Asks player while this tile doesn't exist
+        while (!(model.getAllfaceUpTiles().contains(new Tile(choice)))) {
+            System.out.println("Tile doesn't exist !");
+            System.out.println("Which face up tile do you want to pick ?");
+            choice = kbd.nextInt();
+        }
+
+        return choice;
+    }
+
+    @Override
+    public void displayDeck() {
+        // Displays remaining face down tiles
+        System.out.println("Remaining face down tiles : "
+                + model.faceDownTileCount());
+
+        // Displays face up tiles on the deck
+        System.out.println("Current face up tiles on the deck :");
+        for (Tile tile : model.getAllfaceUpTiles()) {
+            System.out.println(tile.getValue() + " ");
+        }
     }
 
     /**

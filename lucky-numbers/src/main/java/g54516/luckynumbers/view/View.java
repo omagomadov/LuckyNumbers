@@ -50,4 +50,31 @@ public interface View {
      */
     public void displayError(String message);
 
+    /**
+     * Asks which action the player want to do.
+     * <ul>
+     * <li>Asks if the player want pick a face down tile</li>
+     * <li>Asks if the player want to pick a face up tile</li>
+     * </ul>
+     *
+     * @return the action of the player
+     */
+    public String askAction();
+
+    /**
+     * Asks player which face up tile he want to pick.
+     *
+     * @return the value of the tile
+     */
+    public int askWhichFaceUpTile();
+
+    /**
+     * Displays the deck.
+     * <ul>
+     * <li>Displays remaining face down tiles</li>
+     * <li>Displays face up tiles</li>
+     * </ul>
+     */
+    public void displayDeck();
+
 }
