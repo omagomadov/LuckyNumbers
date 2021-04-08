@@ -1,5 +1,7 @@
 package g54516.luckynumbers.model;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
@@ -172,15 +174,17 @@ public class GameTest {
     /* === Testing method getWinner() === */
     @Test
     public void player_is_winner() {
+        List<Integer> winner = new ArrayList<>();
+        winner.add(0);
         fullPlay();
-        assertEquals(0, game.getWinner());
+        assertEquals(winner, game.getWinners());
     }
 
     @Test
     public void get_player_winner_state_not_GAME_OVER() {
         game.start(2);
         assertThrows(IllegalStateException.class,
-                () -> game.getWinner());
+                () -> game.getWinners());
     }
 
     /* === Testing method getPickedTile() === */

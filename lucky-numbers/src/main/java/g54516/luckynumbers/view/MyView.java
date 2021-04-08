@@ -44,7 +44,12 @@ public class MyView implements View {
 
     @Override
     public void displayWinner() {
-        System.out.println("The winner is : " + model.getWinner());
+        System.out.println("#########################");
+        System.out.print("The winner(s) are/is : ");
+        for (int player = 0; player < model.getWinners().size(); player++) {
+            System.out.println(model.getWinners().get(player));
+        }
+        System.out.println("#########################");
     }
 
     @Override
@@ -101,7 +106,7 @@ public class MyView implements View {
         Scanner kbd = new Scanner(System.in);
         String choice = "";
 
-        System.out.println("Current player :" + model.getCurrentPlayerNumber());
+        System.out.println("Current player : " + model.getCurrentPlayerNumber());
         // Asks player which action he want to do
         System.out.println("Which action do you want to do : "
                 + "pick face (d)own tile or pick face (u)p tile ?");
@@ -148,9 +153,10 @@ public class MyView implements View {
                 + model.faceDownTileCount());
 
         // Displays face up tiles on the deck or "no tiles" message
-        System.out.println("Current face up tiles on the deck :");
-        if (model.getAllfaceUpTiles().size() == 0) {
-            System.out.println("no tiles");
+        System.out.print("Current face up tiles on the deck : ");
+        // If no face up tiles just displays a message 'no tiles'
+        if (model.getAllfaceUpTiles().isEmpty()) {
+            System.out.print("(no tiles)\n");
         } else {
             for (Tile tile : model.getAllfaceUpTiles()) {
                 System.out.print(tile.getValue() + " ");

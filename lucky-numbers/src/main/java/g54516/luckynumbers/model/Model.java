@@ -130,7 +130,7 @@ public interface Model {
      * @return the number of the winner.
      * @throws IllegalStateException if game state is not GAME_OVER
      */
-    int getWinner();
+    List<Integer> getWinners();
 
     /**
      * Picks a face down tile randomly. State become PLACE_OR_DROP_TILE.

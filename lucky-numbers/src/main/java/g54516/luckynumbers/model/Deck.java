@@ -102,7 +102,7 @@ public class Deck {
      * @return a random number
      */
     private int randomTile() {
-        return (int) (Math.random() * ((this.faceDownCount() - 1) - 0) + 1) + 0;
+        return (int) (Math.random() * ((this.faceDownCount() - 1) - 0)) + 0;
     }
 
     /**

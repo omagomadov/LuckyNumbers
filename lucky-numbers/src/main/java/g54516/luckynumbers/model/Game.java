@@ -1,5 +1,6 @@
 package g54516.luckynumbers.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -70,7 +71,7 @@ public class Game implements Model {
                 // Put a tile at this position because there is no tile
                 this.state = State.TURN_END;
                 this.boards[this.currentPlayerNumber].put(this.pickedTile, pos);
-                // Verify if the player completed his board
+                // Verify if the player completed his board 
                 if (this.boards[this.currentPlayerNumber].isFull()) {
                     this.state = State.GAME_OVER;
                 }
@@ -86,10 +87,13 @@ public class Game implements Model {
     public void nextPlayer() {
         if (this.state != State.TURN_END) {
             throw new IllegalStateException("State is not TURN_END");
+        } else if (this.faceDownTileCount() == 0) {
+            this.state = State.GAME_OVER;
+        } else {
+            this.state = State.PICK_TILE;
+            this.currentPlayerNumber = (this.currentPlayerNumber + 1)
+                    % this.playerCount;
         }
-        this.state = State.PICK_TILE;
-        this.currentPlayerNumber = (this.currentPlayerNumber + 1)
-                % this.playerCount;
     }
 
     @Override
@@ -155,11 +159,33 @@ public class Game implements Model {
     }
 
     @Override
-    public int getWinner() {
+    public List<Integer> getWinners() {
+        List<Integer> winners = new ArrayList<>();
         if (this.state != State.GAME_OVER) {
             throw new IllegalStateException("State is not GAME_OVER");
+        } else if (this.faceDownTileCount() == 0) {
+            int firstBoard = this.boards[0].tilesOnBoard();
+            // Verify for each player (start at 1) if their board contain
+            // more tiles that the player 0
+            for (int player = 1; player < this.playerCount; player++) {
+                if (firstBoard < this.boards[player].tilesOnBoard()) {
+                    winners.add(player);
+                }
+            }
+            // if list is empty it mean that the board of the player 0 contain
+            // more tiles or equal tiles that others
+            if (winners.isEmpty()) {
+                winners.add(0);
+                for (int player = 1; player < this.playerCount; player++) {
+                    if (firstBoard == this.boards[player].tilesOnBoard()) {
+                        winners.add(player);
+                    }
+                }
+            }
+        } else {
+            winners.add(this.currentPlayerNumber);
         }
-        return this.currentPlayerNumber;
+        return winners;
     }
 
     @Override
