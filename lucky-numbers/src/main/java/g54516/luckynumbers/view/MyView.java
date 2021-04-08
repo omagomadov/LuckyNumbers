@@ -45,9 +45,9 @@ public class MyView implements View {
     @Override
     public void displayWinner() {
         System.out.println("#########################");
-        System.out.print("The winner(s) are/is : ");
+        System.out.println("The winner(s) are/is : ");
         for (int player = 0; player < model.getWinners().size(); player++) {
-            System.out.println(model.getWinners().get(player));
+            System.out.println("Player : " + model.getWinners().get(player));
         }
         System.out.println("#########################");
     }

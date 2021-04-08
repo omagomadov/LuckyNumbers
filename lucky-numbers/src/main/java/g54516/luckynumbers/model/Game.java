@@ -98,7 +98,7 @@ public class Game implements Model {
 
     @Override
     public int getPlayerCount() {
-        if (this.state == state.NOT_STARTED) {
+        if (this.state == State.NOT_STARTED) {
             throw new IllegalStateException("State is NOT_STARTED");
         }
         return this.playerCount;
@@ -111,8 +111,8 @@ public class Game implements Model {
 
     @Override
     public int getCurrentPlayerNumber() {
-        if (this.state == state.NOT_STARTED
-                || this.state == state.GAME_OVER) {
+        if (this.state == State.NOT_STARTED
+                || this.state == State.GAME_OVER) {
             throw new IllegalStateException("State is NOT_STARTED or GAME_OVER");
         }
         return this.currentPlayerNumber;
@@ -120,8 +120,8 @@ public class Game implements Model {
 
     @Override
     public Tile getPickedTile() {
-        if (this.state != state.PLACE_TILE
-                && this.state != state.PLACE_OR_DROP_TILE) {
+        if (this.state != State.PLACE_TILE
+                && this.state != State.PLACE_OR_DROP_TILE) {
             throw new IllegalStateException("State is not PLACE_TILE or"
                     + " PLACE_OR_DROp_TILE");
         }
@@ -148,7 +148,7 @@ public class Game implements Model {
 
     @Override
     public Tile getTile(int playerNumber, Position pos) {
-        if (this.state == state.NOT_STARTED) {
+        if (this.state == State.NOT_STARTED) {
             throw new IllegalStateException("State is NOT_STARTED");
         } else if (!this.isInside(pos) || (playerNumber >= this.playerCount
                 || playerNumber < 0)) {
