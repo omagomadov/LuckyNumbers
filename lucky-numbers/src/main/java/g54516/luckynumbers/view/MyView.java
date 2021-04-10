@@ -35,7 +35,8 @@ public class MyView implements View {
 
     @Override
     public void displayGame() {
-        System.out.println("Current player : " + model.getCurrentPlayerNumber());
+        System.out.println("Current player : "
+                + (model.getCurrentPlayerNumber() + 1));
         this.displayBoard();
         System.out.println("Chosen tile : " + model.getPickedTile().getValue()
                 + "\n");
@@ -47,7 +48,8 @@ public class MyView implements View {
         System.out.println("#########################");
         System.out.println("The winner(s) are/is : ");
         for (int player = 0; player < model.getWinners().size(); player++) {
-            System.out.println("Player : " + model.getWinners().get(player));
+            System.out.println("Player : "
+                    + (model.getWinners().get(player) + 1));
         }
         System.out.println("#########################");
     }
@@ -106,7 +108,8 @@ public class MyView implements View {
         Scanner kbd = new Scanner(System.in);
         String choice = "";
 
-        System.out.println("Current player : " + model.getCurrentPlayerNumber());
+        System.out.println("Current player : "
+                + (model.getCurrentPlayerNumber() + 1));
         // Asks player which action he want to do
         System.out.println("Which action do you want to do : "
                 + "pick face (d)own tile or pick face (u)p tile ?");
