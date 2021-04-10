@@ -83,22 +83,6 @@ public class Board {
         return true;
     }
 
-    /**
-     * Gives the number of tiles on the board.
-     *
-     * @return the number of tiles
-     */
-    public int tilesOnBoard() {
-        int numberOfTiles = 0;
-        for (Tile[] row : this.tiles) {
-            for (Tile col : row) {
-                if (col != null) {
-                    numberOfTiles++;
-                }
-            }
-        }
-        return numberOfTiles;
-    }
 
     /**
      * Checks if the tile is the lowest at given position on the board.

@@ -164,11 +164,11 @@ public class Game implements Model {
         if (this.state != State.GAME_OVER) {
             throw new IllegalStateException("State is not GAME_OVER");
         } else if (this.faceDownTileCount() == 0) {
-            int firstBoard = this.boards[0].tilesOnBoard();
+            int firstBoard = this.numberOfTiles(0);
             // Verify for each player (start at 1) if their board contain
             // more tiles that the player 0
             for (int player = 1; player < this.playerCount; player++) {
-                if (firstBoard < this.boards[player].tilesOnBoard()) {
+                if (firstBoard < this.numberOfTiles(player)) {
                     winners.add(player);
                 }
             }
@@ -177,7 +177,7 @@ public class Game implements Model {
             if (winners.isEmpty()) {
                 winners.add(0);
                 for (int player = 1; player < this.playerCount; player++) {
-                    if (firstBoard == this.boards[player].tilesOnBoard()) {
+                    if (firstBoard == this.numberOfTiles(player)) {
                         winners.add(player);
                     }
                 }
@@ -256,6 +256,25 @@ public class Game implements Model {
         this.state = State.PLACE_TILE;
         this.pickedTile = new Tile(value);
         return this.pickedTile;
+    }
+
+    /**
+     * Gives the number of tiles on the board.
+     *
+     * @param player a player
+     * @return the number of tiles
+     */
+    private int numberOfTiles(int player) {
+        int count = 0;
+        for (int row = 0; row < this.getBoardSize(); row++) {
+            for (int column = 0; column < this.getBoardSize(); column++) {
+                if (this.boards[player].getTile(new Position(row, column))
+                        != null) {
+                    count++;
+                }
+            }
+        }
+        return count;
     }
 
 }
