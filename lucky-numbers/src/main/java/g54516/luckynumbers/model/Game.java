@@ -1,6 +1,7 @@
 package g54516.luckynumbers.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -242,7 +243,10 @@ public class Game implements Model {
         if (this.state == State.NOT_STARTED) {
             throw new IllegalStateException("State is NOT_STARTED");
         }
-        return this.deck.getAllFaceUp();
+        List<Tile> faceUpTiles;
+        faceUpTiles = this.deck.getAllFaceUp();
+        faceUpTiles = Collections.unmodifiableList(faceUpTiles);
+        return faceUpTiles;
     }
 
     /**

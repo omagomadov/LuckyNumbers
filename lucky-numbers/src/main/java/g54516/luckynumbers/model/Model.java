@@ -174,10 +174,13 @@ public interface Model {
     int faceUpTileCount();
 
     /**
-     * Gives the list of face up tiles in the deck.
+     * Gives the list of face up tiles in the deck. And makes sure that the
+     * returned list is not modifiable to avoid an external code to change it.
      *
      * @return list of face up tiles
      * @throws IllegalStateException if the state is NOT_STARTED
+     * @throws UnsupportedOperationException if someone want to add or remove
+     * something on the list
      */
     List<Tile> getAllfaceUpTiles();
 
