@@ -2,6 +2,7 @@ package g54516.luckynumbers.model;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -43,6 +44,7 @@ public class Game implements Model {
         this.currentPlayerNumber = 0;
         this.state = State.PICK_TILE;
         this.deck = new Deck(playerCount);
+        this.SetTilesOnDiagonal();
     }
 
     @Override
@@ -279,6 +281,39 @@ public class Game implements Model {
             }
         }
         return count;
+    }
+
+    /**
+     * Puts tiles on the diagonal for each players.
+     */
+    private void SetTilesOnDiagonal() {
+        int count = 0;
+        int player = 0;
+        int index = 0;
+
+        // Picks 4*playerCount tiles and put it face up
+        while (count < 4 * this.playerCount) {
+            Tile tile = this.deck.pickFaceDown();
+            this.deck.putBack(tile);
+            count++;
+        }
+
+        // Sort face up tiles in order from smallest to largest
+        Collections.sort(this.deck.getAllFaceUp(),
+                Comparator.comparing(tiles -> tiles.getValue()));
+
+        // Puts sorted face up tiles on diagonal for each players
+        while (player < this.playerCount) {
+            for (int i = 0; i < this.getBoardSize(); i++) {
+                this.boards[player].put(this.deck.getAllFaceUp().get(index),
+                        new Position(i, i));
+                index++;
+            }
+            player++;
+        }
+
+        // Cleans the deck after putting tiles on the diagonal for each players
+        this.deck.getAllFaceUp().clear();
     }
 
 }
