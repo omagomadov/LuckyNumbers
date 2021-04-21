@@ -66,23 +66,19 @@ public class Game implements Model {
                 this.state = State.TURN_END;
                 deck.putBack(this.boards[this.currentPlayerNumber].getTile(pos));
                 this.boards[this.currentPlayerNumber].put(this.pickedTile, pos);
-                // Verify if the player completed his board
-                if (this.boards[this.currentPlayerNumber].isFull()) {
-                    this.state = State.GAME_OVER;
-                }
             } else {
                 // Put a tile at this position because there is no tile
                 this.state = State.TURN_END;
                 this.boards[this.currentPlayerNumber].put(this.pickedTile, pos);
-                // Verify if the player completed his board 
-                if (this.boards[this.currentPlayerNumber].isFull()) {
-                    this.state = State.GAME_OVER;
-                }
             }
         } else {
             throw new IllegalArgumentException("the tile can't be put on that "
                     + "position (position outside of the "
                     + "board or position not allowed by the rules)");
+        }
+        // Verify if the player completed his board
+        if (this.boards[this.currentPlayerNumber].isFull()) {
+            this.state = State.GAME_OVER;
         }
     }
 
