@@ -159,30 +159,37 @@ public class Game implements Model {
 
     @Override
     public List<Integer> getWinners() {
+        int player = 0;
+        int tiles = 0;
         List<Integer> winners = new ArrayList<>();
         if (this.state != State.GAME_OVER) {
             throw new IllegalStateException("State is not GAME_OVER");
         } else if (this.faceDownTileCount() == 0) {
-            int firstBoard = this.numberOfTiles(0);
-            // Verify for each player (start at 1) if their board contain
-            // more tiles that the player 0
-            for (int player = 1; player < this.playerCount; player++) {
-                if (firstBoard < this.numberOfTiles(player)) {
-                    winners.add(player);
-                }
-            }
-            // if list is empty it mean that the board of the player 0 contain
-            // more tiles or equal tiles that others
-            if (winners.isEmpty()) {
-                winners.add(0);
-                for (int player = 1; player < this.playerCount; player++) {
-                    if (firstBoard == this.numberOfTiles(player)) {
-                        winners.add(player);
+            // for each players
+            while (player < this.playerCount) {
+                int numberOfTile = 0;
+                // count the number of tiles on board of 'player'
+                for (int lg = 0; lg < this.getBoardSize(); lg++) {
+                    for (int col = 0; col < this.getBoardSize(); col++) {
+                        if (this.boards[player].getTile(new Position(lg, col))
+                                != null) {
+                            numberOfTile++;
+                        }
                     }
                 }
+                // if the number of tiles are equal to 'tiles'. Add the 'player'
+                // on the list
+                if (numberOfTile == tiles) {
+                    winners.add(player);
+                } // else the player have more tiles than 'tiles'. Clean the list
+                // and add the new winner in the list
+                else if (numberOfTile > tiles) {
+                    winners.clear();
+                    winners.add(player);
+                    tiles = numberOfTile;
+                }
+                player++;
             }
-        } else {
-            winners.add(this.currentPlayerNumber);
         }
         return winners;
     }
