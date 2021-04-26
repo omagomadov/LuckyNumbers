@@ -42,10 +42,15 @@ public class Controller {
                     game.start(playerCount);
                     break;
                 case PICK_TILE:
-                    String choice = view.askAction();
                     view.displayDeck();
-                    if (choice.contains("u")) {
-                        game.pickFaceUpTile(new Tile(view.askWhichFaceUpTile()));
+                    if (game.faceUpTileCount() != 0) {
+                        String choice = view.askAction();
+                        view.displayDeck();
+                        if (choice.contains("u")) {
+                            game.pickFaceUpTile(new Tile(view.askWhichFaceUpTile()));
+                        } else {
+                            game.pickFaceDownTile();
+                        }
                     } else {
                         game.pickFaceDownTile();
                     }
