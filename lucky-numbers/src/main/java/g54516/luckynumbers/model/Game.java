@@ -44,7 +44,7 @@ public class Game implements Model {
         this.currentPlayerNumber = 0;
         this.state = State.PICK_TILE;
         this.deck = new Deck(playerCount);
-        this.SetTilesOnDiagonal();
+        this.setTilesOnDiagonal();
     }
 
     @Override
@@ -289,34 +289,39 @@ public class Game implements Model {
     /**
      * Puts tiles on the diagonal for each players.
      */
-    private void SetTilesOnDiagonal() {
-        int count = 0;
+    private void setTilesOnDiagonal() {
         int player = 0;
+        int count = 0;
         int index = 0;
 
-        // Picks 4*playerCount tiles and put it face up
-        while (count < 4 * this.playerCount) {
-            Tile tile = this.deck.pickFaceDown();
-            this.deck.putBack(tile);
-            count++;
-        }
-
-        // Sort face up tiles in order from smallest to largest
-        Collections.sort(this.deck.getAllFaceUp(),
-                Comparator.comparing(tiles -> tiles.getValue()));
-
-        // Puts sorted face up tiles on diagonal for each players
+        // for each players
         while (player < this.playerCount) {
+
+            // picks 4 face down tiles and put it on the deck
+            while (count < 4) {
+                Tile tile = this.deck.pickFaceDown();
+                this.deck.putBack(tile);
+                count++;
+            }
+
+            // sort tiles from lowest to highest
+            Collections.sort(this.deck.getAllFaceUp(),
+                    Comparator.comparing(tiles -> tiles.getValue()));
+
+            // puts tiles on the board of the player
             for (int i = 0; i < this.getBoardSize(); i++) {
                 this.boards[player].put(this.deck.getAllFaceUp().get(index),
                         new Position(i, i));
                 index++;
             }
+
+            // cleans the deck and initialize variables
+            this.deck.getAllFaceUp().clear();
+            index = 0;
+            count = 0;
+
+            // next player
             player++;
         }
-
-        // Cleans the deck after putting tiles on the diagonal for each players
-        this.deck.getAllFaceUp().clear();
     }
-
 }
