@@ -34,6 +34,7 @@ public class Controller {
         Scanner kbd = new Scanner(System.in);
         view.displayWelcome();
         String endGame = "";
+        Position pos;
         while (true) {
             switch (game.getState()) {
                 case NOT_STARTED:
@@ -55,12 +56,17 @@ public class Controller {
                     if (dropOrPut.contains("d")) {
                         game.dropTile();
                     } else {
-                        game.putTile(view.askPosition());
+                        pos = view.askPosition();
+                        if (!game.canTileBePut(pos)) {
+                            view.displayError("Cannot put a tile on that position\n");
+                        } else {
+                            game.putTile(pos);
+                        }
                     }
                     break;
                 case PLACE_TILE:
                     view.displayGame();
-                    Position pos = view.askPosition();
+                    pos = view.askPosition();
                     if (!game.canTileBePut(pos)) {
                         view.displayError("Cannot put a tile on that position\n");
                     } else {
