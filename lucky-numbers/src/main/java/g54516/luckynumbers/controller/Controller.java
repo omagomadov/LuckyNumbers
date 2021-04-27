@@ -31,68 +31,122 @@ public class Controller {
      * Method who start the game.
      */
     public void play() {
+        // initialize variables
         Scanner kbd = new Scanner(System.in);
-        view.displayWelcome();
         String endGame = "";
         Position pos;
+
+        // display welcome message
+        view.displayWelcome();
+
         while (true) {
             switch (game.getState()) {
+
+                // If current state is 'NOT_STARTED'
                 case NOT_STARTED:
+                    // Asks number of player
                     int playerCount = view.askPlayerCount();
+                    // Start the game
                     game.start(playerCount);
                     break;
+
+                // If current state is 'PICK_TILE'
                 case PICK_TILE:
+                    // Displays the deck
                     view.displayDeck();
+                    // If there is face up tiles
                     if (game.faceUpTileCount() != 0) {
+                        // Asks player which action he want do :
+                        // Pick face down or pick face up
                         String choice = view.askAction();
+                        // Displays the deck
                         view.displayDeck();
+                        // If player answer 'u' it mean that he want
+                        // pick face up tile
                         if (choice.contains("u")) {
                             game.pickFaceUpTile(new Tile(view.askWhichFaceUpTile()));
+                            // Else he pick face down tile
                         } else {
                             game.pickFaceDownTile();
                         }
+                        // Else there is not face up tile the player pick
+                        // automatically face down tile
                     } else {
                         game.pickFaceDownTile();
                     }
                     break;
+
+                // If the state is 'PLACE_OR_DROP_TILE'
                 case PLACE_OR_DROP_TILE:
+                    // Displays the board
                     view.displayGame();
+                    // Asks player if he want put his tile or drop it
                     String dropOrPut = view.askDropOrPut();
+                    // if the player answer 'd' it mean that he want drop 
+                    // the tile
                     if (dropOrPut.contains("d")) {
                         game.dropTile();
+                        // Else he must put the tile on his board
                     } else {
+                        // Asks player in which position he want to put his
+                        // tile
                         pos = view.askPosition();
+                        // If the given position by the player is wrong
+                        // (don't respect rules or outside the board)
+                        // display an error message
                         if (!game.canTileBePut(pos)) {
                             view.displayError("Cannot put a tile on that position\n");
+                            // Else put the tile on the given position
                         } else {
                             game.putTile(pos);
                         }
                     }
                     break;
+
+                // If the current state is 'PLACE_TILE'
+                // (if the player picks face up tile)
                 case PLACE_TILE:
+                    // Displays the board
                     view.displayGame();
+                    // Asks player in which position he want put his tile
                     pos = view.askPosition();
+                    // If the given position by the player is wrong
+                    // (don't respect rules or outside the board)
+                    // display an error message
                     if (!game.canTileBePut(pos)) {
                         view.displayError("Cannot put a tile on that position\n");
                     } else {
+                        // Else put the tile on the given position
                         game.putTile(pos);
                     }
                     break;
+
+                // If the current state is 'TURN_END'
                 case TURN_END:
+                    // The next player is the current player
                     game.nextPlayer();
                     break;
+
+                // If the current state is 'GAME_OVER'
                 case GAME_OVER:
+                    // Displays the winners or the winner
                     view.displayWinner();
+                    // Asks player if he want to retry or quit the game
                     System.out.println("Do you want (r)estart or (q)uit the game?");
                     endGame = kbd.next();
+                    // If player answer 'r' it mean that he want to restart the
+                    // game
                     if (endGame.contains("r")) {
                         playerCount = view.askPlayerCount();
                         game.start(playerCount);
                     }
                     break;
             }
+            // If the player answer 'q' it mean that he want to quit the game
             if (endGame.contains("q")) {
+                // Displays end message
                 System.out.println("Goodbye ! :-) ");
+                // the 'break' is to stop/break/exit the while condition
                 break;
             }
         }
