@@ -7,7 +7,7 @@
 ## L'implémentation de cette variante :
 
 Pour ce faire une méthode privée `setTilesOnDiagonal()` a été ajouter dans la classe `Game`. Cette méthode consiste à ajouter sur le plateau de chaques joueurs 4 tuiles d'ordre croissant. 
-* Plus précisement, elle pioche 4 * `PlayerCount` tuiles faces cachées.
+* Plus précisement, pour chaque joueur elle pioche 4 * tuiles faces cachées.
 * Une fois les tuiles piochées, elles sont désormais face visible sur la table. Ensuite elle utilise la méthode `sort` de la classe `Collections` pour pouvoir les trier en fournissant un `Comparator`, c'est-à-dire pouvoir se baser sur quoi les tuiles seront trier. Dans notre cas, ce sera leurs numéros.
 
 ```// Sort face up tiles in order from smallest to largest
