@@ -3,6 +3,7 @@ package g54516.luckynumbers.view;
 import g54516.luckynumbers.model.Model;
 import g54516.luckynumbers.model.Position;
 import g54516.luckynumbers.model.Tile;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -45,11 +46,12 @@ public class MyView implements View {
 
     @Override
     public void displayWinner() {
+        List<Integer> winners = model.getWinners();
         System.out.println("#########################");
         System.out.println("The winner(s) are/is : ");
-        for (int player = 0; player < model.getWinners().size(); player++) {
+        for (int player = 0; player < winners.size(); player++) {
             System.out.println("Player : "
-                    + (model.getWinners().get(player) + 1));
+                    + (winners.get(player) + 1));
         }
         System.out.println("#########################");
     }
