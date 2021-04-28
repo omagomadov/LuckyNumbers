@@ -35,6 +35,11 @@ public class MyView implements View {
     }
 
     @Override
+    public void displayEnd() {
+        System.out.println("Goodbye ! :-) ");
+    }
+
+    @Override
     public void displayGame() {
         System.out.println("Current player : "
                 + (model.getCurrentPlayerNumber() + 1));
@@ -146,6 +151,22 @@ public class MyView implements View {
             choice = kbd.nextInt();
         }
         System.out.println("");
+
+        return choice;
+    }
+
+    @Override
+    public String askQuitOrRetry() {
+        Scanner kbd = new Scanner(System.in);
+        String choice;
+
+        System.out.println("Do you want (r)estart or (q)uit the game?");
+        choice = kbd.next();
+        while (!choice.contains("r") && !choice.contains("q")) {
+            System.out.println("Wrong action");
+            System.out.println("Do you want (r)estart or (q)uit the game?");
+            choice = kbd.next();
+        }
 
         return choice;
     }

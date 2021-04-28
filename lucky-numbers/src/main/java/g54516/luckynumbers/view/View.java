@@ -88,4 +88,16 @@ public interface View {
      */
     public void displayDeck();
 
+    /**
+     * Displays a end message.
+     */
+    public void displayEnd();
+
+    /**
+     * Asks player if he want to quit or retry the game.
+     *
+     * @return the action of the player
+     */
+    public String askQuitOrRetry();
+
 }

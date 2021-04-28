@@ -132,8 +132,7 @@ public class Controller {
                     // Displays the winners or the winner
                     view.displayWinner();
                     // Asks player if he want to retry or quit the game
-                    System.out.println("Do you want (r)estart or (q)uit the game?");
-                    endGame = kbd.next();
+                    endGame = view.askQuitOrRetry();
                     // If player answer 'r' it mean that he want to restart the
                     // game
                     if (endGame.contains("r")) {
@@ -145,7 +144,7 @@ public class Controller {
             // If the player answer 'q' it mean that he want to quit the game
             if (endGame.contains("q")) {
                 // Displays end message
-                System.out.println("Goodbye ! :-) ");
+                view.displayEnd();
                 // the 'break' is to stop/break/exit the while condition
                 break;
             }
