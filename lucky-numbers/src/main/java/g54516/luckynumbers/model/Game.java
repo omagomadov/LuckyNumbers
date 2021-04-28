@@ -164,7 +164,7 @@ public class Game implements Model {
         List<Integer> winners = new ArrayList<>();
         if (this.state != State.GAME_OVER) {
             throw new IllegalStateException("State is not GAME_OVER");
-        } else if (this.faceDownTileCount() == 0) {
+        } else {
             // for each players
             while (player < this.playerCount) {
                 int numberOfTile = 0;
