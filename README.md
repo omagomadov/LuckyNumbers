@@ -17,13 +17,3 @@ Pour ce faire une méthode privée `setTilesOnDiagonal()` a été ajouter dans l
 * Une fois les tuiles faces visibles trier dans l'ordre croissant, elles seront placer dans la diagonal du plateau de chaques joueurs avec la méthode `put()` de la classe `Board`.
 
 * Pour terminer, la table (ou deck) sera vider avec la méthode `clear()` fournis par la classe `List`, car la méthode `put()` de la classe `Board` pose une tuile à une position sur le plateau mais le supprime pas de la table.
-
-## Remarque :
-Les tests qui utilisent la méthode `fullPlay()` de la classe `GameTest` retournent une `IllegalArgumentException`, car cette méthode essaye de mettre une tuile à une position qui ne respecte pas les règles du jeu. C'est dû à la méthode `setTilesOnDiagonal()` qui ajoute des tuiles d'ordres croissants sur la diagonal dans le plateau au début du jeu.
-
-```
-the tile can't be put on that position (position outside of the board or position not allowed by the rules)
-java.lang.IllegalArgumentException
-	at g54516.luckynumbers.model.GameTest.fullPlay(GameTest.java:47)
-	at g54516.luckynumbers.model.GameTest.start_when_game_over_ok(GameTest.java:34)
-```
