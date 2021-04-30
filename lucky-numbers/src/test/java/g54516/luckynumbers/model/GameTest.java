@@ -37,7 +37,7 @@ public class GameTest {
 
     /* Play a game till the end */
     private void fullPlay() {
-        game.start(2);
+        game.startWithoutDiagonal(2);
         int value = 1;
         int line = 0;
         int col = 0;
@@ -109,15 +109,6 @@ public class GameTest {
 
     /* === À vous de compléter... === */
  /* === Testing method canTileBePut() === */
-    @Test
-    public void can_tile_be_put_false() {
-        game.start(2);
-        game.pickTile(5);
-        game.putTile(new Position(0, 1));
-        game.pickTile(10);
-        assertFalse(game.canTileBePut(new Position(0, 0)));
-    }
-
     @Test
     public void can_tile_be_put_state_not_PLACE_TILE() {
         game.start(2);

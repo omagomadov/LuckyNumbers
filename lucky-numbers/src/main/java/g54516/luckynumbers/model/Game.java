@@ -317,4 +317,30 @@ public class Game implements Model {
             player++;
         }
     }
+
+    /**
+     * Start a game without tiles on diagonal on each boards. Used only for the
+     * fullPlay() method in the test class to avoid an exception error due to a
+     * tile breaking the rules.
+     *
+     * @param playerCount the number of players
+     */
+    void startWithoutDiagonal(int playerCount) {
+        if (this.state != State.NOT_STARTED
+                && this.state != State.GAME_OVER) {
+            throw new IllegalStateException("State must be NOT_STARTED "
+                    + "nor GAME_OVER");
+        } else if (playerCount < 2 || playerCount > 4) {
+            throw new IllegalArgumentException("the number of players is not between 2 and 4 "
+                    + "(both included)");
+        }
+        this.boards = new Board[playerCount];
+        for (int i = 0; i < this.boards.length; i++) {
+            this.boards[i] = new Board();
+        }
+        this.playerCount = playerCount;
+        this.currentPlayerNumber = 0;
+        this.state = State.PICK_TILE;
+        this.deck = new Deck(playerCount);
+    }
 }
