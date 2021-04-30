@@ -161,32 +161,25 @@ public class Game implements Model {
     public List<Integer> getWinners() {
         int player = 0;
         int tiles = 0;
+        int count = 0;
         List<Integer> winners = new ArrayList<>();
         if (this.state != State.GAME_OVER) {
             throw new IllegalStateException("State is not GAME_OVER");
         } else {
             // for each players
             while (player < this.playerCount) {
-                int numberOfTile = 0;
                 // count the number of tiles on board of 'player'
-                for (int lg = 0; lg < this.getBoardSize(); lg++) {
-                    for (int col = 0; col < this.getBoardSize(); col++) {
-                        if (this.boards[player].getTile(new Position(lg, col))
-                                != null) {
-                            numberOfTile++;
-                        }
-                    }
-                }
+                count = this.numberOfTiles(player);
                 // if the number of tiles are equal to 'tiles'. Add the 'player'
                 // on the list
-                if (numberOfTile == tiles) {
+                if (count == tiles) {
                     winners.add(player);
                 } // else the player have more tiles than 'tiles'. Clean the list
                 // and add the new winner in the list
-                else if (numberOfTile > tiles) {
+                else if (count > tiles) {
                     winners.clear();
                     winners.add(player);
-                    tiles = numberOfTile;
+                    tiles = count;
                 }
                 player++;
             }
