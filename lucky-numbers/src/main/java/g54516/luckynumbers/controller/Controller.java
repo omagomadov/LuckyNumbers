@@ -4,7 +4,6 @@ import g54516.luckynumbers.model.Model;
 import g54516.luckynumbers.model.Position;
 import g54516.luckynumbers.model.Tile;
 import g54516.luckynumbers.view.View;
-import java.util.Scanner;
 
 /**
  * Controller of the game.
@@ -32,7 +31,6 @@ public class Controller {
      */
     public void play() {
         // initialize variables
-        Scanner kbd = new Scanner(System.in);
         String endGame = "";
 
         // display welcome message
@@ -41,7 +39,7 @@ public class Controller {
         while (true) {
             switch (game.getState()) {
 
-                // If current state is 'NOT_STARTED'
+                // If the state is 'NOT_STARTED'
                 case NOT_STARTED:
                     // Asks number of player
                     int playerCount = view.askPlayerCount();
@@ -49,29 +47,30 @@ public class Controller {
                     game.start(playerCount);
                     break;
 
-                // If current state is 'PICK_TILE'
+                // If the state is 'PICK_TILE'
                 case PICK_TILE:
                     this.pickUpOrDown();
                     break;
 
                 // If the state is 'PLACE_OR_DROP_TILE'
+                // (if the player picks face down tile)
                 case PLACE_OR_DROP_TILE:
                     this.dropOrPut();
                     break;
 
-                // If the current state is 'PLACE_TILE'
+                // If the state is 'PLACE_TILE'
                 // (if the player picks face up tile)
                 case PLACE_TILE:
                     this.putTile();
                     break;
 
-                // If the current state is 'TURN_END'
+                // If the state is 'TURN_END'
                 case TURN_END:
                     // The next player is the current player
                     game.nextPlayer();
                     break;
 
-                // If the current state is 'GAME_OVER'
+                // If the state is 'GAME_OVER'
                 case GAME_OVER:
                     // Displays the winners or the winner
                     view.displayWinner();
@@ -99,8 +98,6 @@ public class Controller {
      * Asks player if he want to pick face up or face down tile.
      */
     private void pickUpOrDown() {
-        Scanner kbd = new Scanner(System.in);
-
         // Displays the deck
         view.displayDeck();
         // If there is face up tiles
@@ -129,7 +126,6 @@ public class Controller {
      * Asks player if he want to drop or put the tile.
      */
     private void dropOrPut() {
-        Scanner kbd = new Scanner(System.in);
         Position pos;
 
         // Displays the board
@@ -161,7 +157,6 @@ public class Controller {
      * Asks player the position where he want to put a tile.
      */
     private void putTile() {
-        Scanner kbd = new Scanner(System.in);
         Position pos;
 
         // Displays the board
