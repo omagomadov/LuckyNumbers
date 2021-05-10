@@ -204,7 +204,7 @@ public class MyView implements View {
         choice = kbd.nextLine();
 
         // Asks player while the action is wrong
-        while (!(choice.contains("d")) && !(choice.contains("p"))) {
+        while (!(choice.contains("d")) && !(choice.contains("p")) || choice.length() != 1) {
             this.displayError("Wrong action !");
             System.out.println("Which action do you want to do : "
                     + "(d)rop the tile or (p)ut the tile ?");
